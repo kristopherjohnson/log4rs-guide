@@ -10,12 +10,12 @@
 //! point-of-view, and it can be hard to quickly scan it to find out how to do
 //! what you want to do.  In contrast, this tutorial has a _declarative_ focus,
 //! meaning it is based on desired results rather than on the details of how it
-//! all actually works internally.  We start with a set of small, minimal
-//! examples, then gradually build on those to introduce additional features.
+//! all works internally.  We start with a set of small, minimalistic examples,
+//! then gradually build on those to introduce additional features.
 //!
-//! You can think of this as a set of snippets or recipes you can copy, allowing
-//! you to take advantage of log4rs without studying all the documentation and
-//! code.
+//! You can think of this guide as a set of snippets or recipes you can copy,
+//! allowing you to take advantage of log4rs without studying all the
+//! documentation and code.
 //!
 //! It is assumed that the reader has a basic understanding of how to write Rust
 //! code and how to use the [Cargo](https://doc.rust-lang.org/cargo/).  Some
@@ -38,7 +38,7 @@
 //! log4rs = 1.0
 //! ```
 //!
-//! ## Configuration Files
+//! ## Loading Configuration Files
 //!
 //! log4rs is designed to be easily configurable via a _configuration file_
 //! which is read by your program at startup.  Use of a configuration file makes
@@ -46,8 +46,8 @@
 //! recompile code.
 //!
 //! The most common format for log4rs configuration files is YAML, but JSON and
-//! TOML are also supported.  Most of the examples we present use YAML, but
-//! there are some examples of the other formats.
+//! TOML are also supported.  Most of the examples we present in the tutorial
+//! use YAML, but there are examples of the other formats.
 //!
 //! To load a configuration file, call the
 //! [log4rs::init_file()](https://docs.rs/log4rs/1.0.0/log4rs/fn.init_file.html)
@@ -130,23 +130,25 @@
 //! Of course, you can use this to test configuration files you've written
 //! yourself, not just the provided configurations.
 //!
-//! The tutorial is in the [docs] submodule.  You can go there now to start.
+//! The tutorial is in the [guide] submodule.  You can go there now to start.
 
 use log::{debug, error, info, trace, warn};
 use log4rs;
 use std::env;
-use std::path::Path;
 use std::process;
 
-pub mod docs;
+// There is no code in the `guide` submodule, but we want to generate
+// documentation for it.
+pub mod guide;
 
 /// The `main()` function reads an optional command-line argument, initializes
-/// log4rs using the specified file (which defaults to `minimal_stdout.yaml` if
-/// not specified), and then logs a series of messages.
+/// log4rs using the specified file (or `minimal_stdout.yaml` if not specified),
+/// and then generates a series of log messages.
 fn main() {
     let args: Vec<String> = env::args().collect();
+
     let config_path = match args.len() {
-        1 => "minimal_stdout.yaml",
+        1 => "minimal_stdout.yaml", // default
         2 => args[1].as_ref(),
         _ => {
             eprintln!("error: program accepts only one command-line argument");
@@ -154,17 +156,14 @@ fn main() {
         }
     };
 
-    if !Path::new(config_path).exists() {
-        eprintln!("error: \"{}\" does not exist", config_path);
-        process::abort();
-    }
-
     log4rs::init_file(config_path, Default::default()).unwrap_or_else(|e| {
-        eprintln!("error: unable to initialize logger: {}", e);
+        eprintln!(
+            "error: unable to initialize logger using \"{}\": {}",
+            config_path, e
+        );
         process::abort();
     });
 
-    eprintln!("using configuration file {}:", config_path);
     test_logging()
 }
 
@@ -188,7 +187,7 @@ fn test_logging() {
 
 /// The `foo` module contains submodules with their own logging functions.
 pub mod foo {
-    /// The `bar` module contains a submodule with its own logging function.
+    /// The `bar` module contains a logging function.
     pub mod bar {
         use log::*;
 
@@ -220,7 +219,7 @@ pub mod foo {
 }
 
 /// The `fee` module contains submodules with their own logging functions.
-mod fee {
+pub mod fee {
     /// The `fi` module contains a `test_logging()` function, and submodules
     /// with their own logging functions.
     pub mod fi {

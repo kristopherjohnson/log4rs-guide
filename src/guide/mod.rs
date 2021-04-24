@@ -1,7 +1,7 @@
 //! ## A Beginner's Guide to log4rs
 //!
-//! This [docs] module is a container for all the log4rs configuration examples.
-//! They are designed to be read in this order:
+//! This `guide` module is a container for the log4rs tutorial and configuration
+//! examples.  They are designed to be read in this order:
 //!
 //! TODO: Insert list
 //!
