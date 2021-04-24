@@ -1,0 +1,10 @@
+# Minimal log4rs that simply writes all log messages to standard output,
+# using all the other defaults provided by log4rs.
+
+appenders:
+  log:
+    kind: console
+
+root:
+  appenders:
+    - log

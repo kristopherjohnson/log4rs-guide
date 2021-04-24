@@ -1,0 +1,13 @@
+{
+  "appenders" : {
+    "log" : {
+      "kind" : "console"
+    }
+  },
+  "root" : {
+    "level" : "trace",
+    "appenders" : [
+      "log"
+    ]
+  }
+}
